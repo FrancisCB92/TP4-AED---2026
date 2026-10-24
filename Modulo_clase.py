@@ -1,6 +1,5 @@
-
-
 class Tratamiento:
+
     def __init__(self, id, dni, nombre, apellido, icd10, monto, monto_final, complejidad, id_alg):
         self.id = id
         self.dni = dni
@@ -8,9 +7,11 @@ class Tratamiento:
         self.apellido = apellido
         self.icd10 = icd10
         self.monto = float(monto)
-        self.monto_final = float(monto_final)
+        self.monto_final = float(monto_final) # se inicializa con 0
         self.complejidad = complejidad
         self.id_alg = id_alg
+
+
 
 
     def __str__(self):
@@ -31,6 +32,3 @@ class Tratamiento:
             return True
         else:
             return False
-
-
-
