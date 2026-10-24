@@ -1,6 +1,56 @@
+# PENDIENTES
+# [] falla este punto r2.1: de los comentarios entrega del TP3, pero no tenemos los valores de entreda para probar, algun algoritmo de calculo de monto final
+# no funciona bien, puede ser del TP3: módulo algoritmos o el módulo del TP1 (este último no está testeado) o es la lógica del último paso del punto r2.1 del TP3
+# en este último caso no interesa para este TP4.
+# r2.1: 31471.151477599982 --> Incorrecto (esperado: (30245.9809074 <= resultado <= 30246.0809074) o (29540.880907400002 <= resultado <= 29540.9809074))
+
+
+
+
+
 import Modulo_clase
 import Modulo_algoritmos
 import Modulo_tp1
+
+
+
+# Funciones tomadas de los simulacros de parcial: algoritmo de búsqueda binaria para order el vector
+
+def validar(inf):
+    n = int(input('Valor (mayor a ' + str(inf) + ' por favor): '))
+    while n <= inf:
+        n = int(input('Error... Se pidio mayor a ' + str(inf) + '... Cargue de nuevo: '))
+    return n
+
+def añadir_en_orden(v, cobertura):
+    n = len(v)
+    izq, der = 0, n - 1 # ****
+    pos = 0
+    while izq <= der:
+        c = (izq + der) // 2
+        if v[c].numero == cobertura.numero:
+            pos = c
+            break
+        elif v[c].numero > cobertura.numero:
+            der = c - 1
+        else:
+            izq = c + 1
+    if izq > der:
+        pos = izq
+    v[pos:pos] = [cobertura]
+
+
+def cargarcoberturas():
+    n = validar(0)
+    v = []  # este inicializa la búsqueda...
+    for i in range(n):
+        # Acá la función tomar valor uno por uno del csv coberturas
+        # ...
+        añadir_en_orden(v, cobertura)
+    return v
+
+
+
 
 def CargaTratamientos(v):
     cantidad_tratamientos = 0
@@ -73,18 +123,19 @@ def principal():
     op = -1
 
     while op != 0:
-        print("\n1. Cargar Tratamientos")
-        print("2. Mostrar Resultados")
+        print("\n1. Cargar Coberturas")
+        print("2. Cargar Tratamientos")
         print("0. Salir")
 
         op = int(input("Ingrese opción: "))
 
         if op == 1:
-            v = CargaTratamientos(v)
+            v = cargarcoberturas()
             print("opción 1 seleccionada...")
 
 
         elif op == 2:
+            v = CargaTratamientos(v)
             print("opción 2 seleccionada...")
 
 
