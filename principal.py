@@ -68,8 +68,8 @@ def cargarafiliados():
 
 
 
-def CargaTratamientos(v):
-    cantidad_tratamientos = 0
+def CargaTratamientos(v2):
+    id_tratamientos = 0
 
     # Apertura simple de archivo según el estándar de la materia
     m = open("tratamientos.csv")
@@ -81,11 +81,11 @@ def CargaTratamientos(v):
             continue
 
         dni, nombre, apellido, icd10, monto, complejidad, id_alg = linea_limpia.split(",")
-        cantidad_tratamientos += 1
+        id_tratamientos += 1
         monto_final = 0
 
-        v.append(Modulo_clase.Tratamiento(
-            cantidad_tratamientos,
+        v2.append(Modulo_clase.Tratamiento(
+            id_tratamientos,
             dni,
             nombre,
             apellido,
@@ -97,8 +97,8 @@ def CargaTratamientos(v):
         ))
 
     m.close()
-    r1_1 = cantidad_tratamientos
-    return r1_1, v
+
+    return v2
 
 
 
