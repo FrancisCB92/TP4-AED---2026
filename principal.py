@@ -9,6 +9,7 @@
 
 
 import Modulo_clase
+import Modulo_clase_Afiliado
 import Modulo_algoritmos
 import Modulo_tp1
 
@@ -16,22 +17,16 @@ import Modulo_tp1
 
 # Funciones tomadas de los simulacros de parcial: algoritmo de búsqueda binaria para order el vector
 
-def validar(inf):
-    n = int(input('Valor (mayor a ' + str(inf) + ' por favor): '))
-    while n <= inf:
-        n = int(input('Error... Se pidio mayor a ' + str(inf) + '... Cargue de nuevo: '))
-    return n
-
 def aniadir_en_orden(v, afiliado):
     n = len(v)
     izq, der = 0, n - 1 # ****
     pos = 0
     while izq <= der:
         c = (izq + der) // 2
-        if v[c].numero == afiliado.numero:
+        if v[c].dni == afiliado.dni:
             pos = c
             break
-        elif v[c].numero > afiliado.numero:
+        elif v[c].dni > afiliado.dni:
             der = c - 1
         else:
             izq = c + 1
@@ -41,13 +36,34 @@ def aniadir_en_orden(v, afiliado):
 
 
 def cargarafiliados():
-    n = validar(0)
-    v = []  # este inicializa la búsqueda...
-    for i in range(n):
-        # Acá la función tomar valor uno por uno del csv coberturas
-        # ...
-        aniadir_en_orden(v, afiliado)
-    return v
+    v1 = []  # este reinicia el vector en cada llamada
+
+    m = open("coberturas.csv")
+    m.readline()
+    id_afiliado = 0
+
+    for linea in m:
+        linea_limpia = linea[:-1]  # Quita el salto de línea (\n)
+        if not linea_limpia:
+            continue
+
+        dni, codigo, nivel, tope = linea_limpia.split(",")
+        id_afiliado += 1
+
+        afiliado = Modulo_clase_Afiliado.Afiliado(
+                                                  id_afiliado,
+                                                  dni,
+                                                  codigo,
+                                                  nivel,
+                                                  tope
+                                                  )
+
+
+        aniadir_en_orden(v1, afiliado)
+
+    m.close()
+
+    return v1
 
 
 
