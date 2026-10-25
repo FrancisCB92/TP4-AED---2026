@@ -1,5 +1,7 @@
 import Modulo_algoritmos
 
+
+
 def porcentajecubierto(nivel, complejidad):
     # así es escalable?
     # f = nivel, c = complejidad
@@ -30,7 +32,7 @@ def esafiliado(tratamiento_dni, vectorafiliados):
 # TESTEAER CON LOS VALORES DE EJEMPLO DE LA CONSIGNA!!!!!!
 # [] se llama al afiliado concreto y al vector de afiliados ¿hay forma de simplificar esto?
 def calculomontosobrasocial(afiliado, tratamiento):
-    monto_cubierto = conttopes = 0
+    monto_cubierto = aplicatopes = 0
     monto_no_cubierto = 0
 
     if afiliado:
@@ -38,12 +40,12 @@ def calculomontosobrasocial(afiliado, tratamiento):
         monto_cubierto = Modulo_algoritmos.aplicaporcentaje(tratamiento.monto_final, porcentaje)
         if monto_cubierto >= afiliado.tope:
             monto_cubierto = afiliado.tope
-            conttopes += 1
+            aplicatopes = True
 
 
     monto_no_cubierto =  tratamiento.monto_final - monto_cubierto
 
-    return monto_cubierto, monto_no_cubierto, conttopes
+    return monto_cubierto, monto_no_cubierto, aplicatopes
 
 
 #if __name__ == "__main__":
