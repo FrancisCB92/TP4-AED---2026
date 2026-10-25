@@ -1,3 +1,5 @@
+
+
 class Tratamiento:
 
     def __init__(self, id, dni, nombre, apellido, icd10, monto, monto_final, complejidad, id_alg):

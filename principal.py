@@ -3,11 +3,9 @@
 # no funciona bien, puede ser del TP3: módulo algoritmos o el módulo del TP1 (este último no está testeado) o es la lógica del último paso del punto r2.1 del TP3
 # en este último caso no interesa para este TP4.
 # r2.1: 31471.151477599982 --> Incorrecto (esperado: (30245.9809074 <= resultado <= 30246.0809074) o (29540.880907400002 <= resultado <= 29540.9809074))
+from operator import contains
 
-
-
-
-
+import Modulo_Afiliados
 import Modulo_clase
 #import Modulo_clase_Afiliado
 import Modulo_algoritmos
@@ -92,16 +90,16 @@ def CargaTratamientos():
         monto_final = 0
 
         vectortratamientos.append(Modulo_clase.Tratamiento(
-                                            id_tratamientos,
-                                            dni,
-                                            nombre,
-                                            apellido,
-                                            icd10,
-                                            monto,
-                                            monto_final,
-                                            complejidad,
-                                            id_alg
-                                        ))
+                                                            id_tratamientos,
+                                                            dni,
+                                                            nombre,
+                                                            apellido,
+                                                            icd10,
+                                                            monto,
+                                                            monto_final,
+                                                            complejidad,
+                                                            id_alg
+                                                        ))
 
     m.close()
 
@@ -111,13 +109,14 @@ def CargaTratamientos():
 
 
 def calculomontofinal(vectorafiliados, vectortratamientos):
-    cont_tratamiento = 0
+    #cont_tratamiento = 0
     #acumulador_dif = 0
-
+    cont_noafiliados = 0
+    r31monto_cubierto_total = r32monto_no_cubierto_total = monto_cubierto =  monto_no_cubierto = 0
 
 
     for t in vectortratamientos:
-        cont_tratamiento += 1
+        #cont_tratamiento += 1
         monto_base = float(t.monto)
         #print(t)
         id_alg = int(t.id_alg)
@@ -134,6 +133,23 @@ def calculomontofinal(vectorafiliados, vectortratamientos):
             monto_final = Modulo_algoritmos.Algoritmo3(t.conttratamacomplejidad(), monto_base, t.icd10)
         else:
             monto_final = Modulo_tp1.calcular_monto_tratamiento(t.icd10, monto_base)
+
+        afiliado = Modulo_Afiliados.esafiliado(t.dni, vectorafiliados)
+
+        # determinar si es afiliado
+        if afiliado:
+            monto_cubierto, monto_no_cubiertom, conttopes = Modulo_Afiliados.calculomontosobrasocial(afiliado, t)
+        else:
+            # contador de NO afiliados
+            cont_noafiliados += 1
+
+
+        # SALIDAS!
+        r31monto_cubierto_total += monto_cubierto
+        r32monto_no_cubierto_total += monto_no_cubierto
+        r33conttope = conttopes
+        r34contnoafiliados = cont_noafiliados
+
 
         # [] FALTA paso intermedio es determinar el monto final teniendo en cuenta la cobertura
         # (si es o no afiliado nivel y topes)
@@ -171,8 +187,12 @@ def principal():
             #print("opción 2 seleccionada...")
 
         elif op == 3:
-            calculomontofinal(vectorafiliados, vectortratamientos)
-            print("opción 3 seleccionada...")
+            if vectorafiliados and vectortratamientos:
+
+                calculomontofinal(vectorafiliados, vectortratamientos)
+                print("opción 3 seleccionada...")
+            else:
+                print("el/los vector/es no fueran cargados")
 
 
 if __name__ == "__main__":

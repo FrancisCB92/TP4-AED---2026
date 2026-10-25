@@ -13,14 +13,14 @@ def porcentajecubierto(nivel, complejidad):
 
 
 
-def esafiliado(dni, vector):
-    izq, der = 0, len(vector) - 1
+def esafiliado(tratamiento_dni, vectorafiliados):
+    izq, der = 0, len(vectorafiliados) - 1
     while izq <= der:
         c = (izq + der) // 2
-        if dni == vector[c].dni:
+        if tratamiento_dni == vectorafiliados[c].dni:
             #print("se encontró afiliado!: ", dni)
-            return True
-        if dni < vector[c].dni:
+            return vectorafiliados[c]
+        if tratamiento_dni < vectorafiliados[c].dni:
             der = c - 1
         else:
             izq = c + 1
@@ -29,20 +29,21 @@ def esafiliado(dni, vector):
 
 # TESTEAER CON LOS VALORES DE EJEMPLO DE LA CONSIGNA!!!!!!
 # [] se llama al afiliado concreto y al vector de afiliados ¿hay forma de simplificar esto?
-def calculomontosobrasocial(afiliado, tratamiento, vectorafiliados):
-    monto_cubierto = 0
+def calculomontosobrasocial(afiliado, tratamiento):
+    monto_cubierto = conttopes = 0
     monto_no_cubierto = 0
 
-    if esafiliado(tratamiento.dni, vectorafiliados):
+    if afiliado:
         porcentaje = porcentajecubierto(afiliado.nivel, tratamiento.conttratamacomplejidad())
         monto_cubierto = Modulo_algoritmos.aplicaporcentaje(tratamiento.monto_final, porcentaje)
         if monto_cubierto >= afiliado.tope:
             monto_cubierto = afiliado.tope
+            conttopes += 1
 
 
     monto_no_cubierto =  tratamiento.monto_final - monto_cubierto
 
-    return monto_cubierto, monto_no_cubierto
+    return monto_cubierto, monto_no_cubierto, conttopes
 
 
 #if __name__ == "__main__":
