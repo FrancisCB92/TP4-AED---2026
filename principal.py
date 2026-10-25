@@ -36,7 +36,7 @@ def aniadir_en_orden(v, afiliado):
 
 
 def cargarafiliados():
-    v1 = []  # este reinicia el vector en cada llamada
+    vectorafiliados = []  # este reinicia el vector en cada llamada
 
     m = open("coberturasPRUEBAS.csv")
     m.readline()
@@ -59,22 +59,22 @@ def cargarafiliados():
                                           )
 
 
-        aniadir_en_orden(v1, afiliado)
+        aniadir_en_orden(vectorafiliados, afiliado)
 
 
     m.close()
 
-    #for afiliado in v1:
+    #for afiliado in vectorafiliados:
     #    print(afiliado)
 
 
-    return v1
+    return vectorafiliados
 
 
 
 
 def CargaTratamientos():
-    v2 = []
+    vectortratamientos = []
     id_tratamientos = 0
 
     # Apertura simple de archivo según el estándar de la materia
@@ -91,7 +91,7 @@ def CargaTratamientos():
         id_tratamientos += 1
         monto_final = 0
 
-        v2.append(Modulo_clase.Tratamiento(
+        vectortratamientos.append(Modulo_clase.Tratamiento(
                                             id_tratamientos,
                                             dni,
                                             nombre,
@@ -105,30 +105,18 @@ def CargaTratamientos():
 
     m.close()
 
-    return v2
+    return vectortratamientos
 
 
-def esafiliado(dni, vector):
-    # debe ser busqueda binaria!
-    izq, der = 0, len(vector) - 1
-    while izq <= der:
-        c = (izq + der) // 2
-        if dni == vector[c].dni:
-            #print("se encontró afiliado!: ", dni)
-            return True
-        if dni < vector[c].dni:
-            der = c - 1
-        else:
-            izq = c + 1
-    return False
 
-def calculomontofinal(v1, v2):
+
+def calculomontofinal(vectorafiliados, vectortratamientos):
     cont_tratamiento = 0
     #acumulador_dif = 0
 
 
 
-    for t in v2:
+    for t in vectortratamientos:
         cont_tratamiento += 1
         monto_base = float(t.monto)
         #print(t)
@@ -136,7 +124,7 @@ def calculomontofinal(v1, v2):
 
         # acá se verifica si es afiliado para luego usar los algoritmos que van a
         # modificar el monto final
-        es_afiliado = esafiliado(t.dni, v1)
+
 
         if id_alg == 1:
             monto_final = Modulo_algoritmos.Algoritmo1(t.conttratamacomplejidad(), monto_base, t.icd10)
@@ -155,14 +143,14 @@ def calculomontofinal(v1, v2):
         #acumulador_dif += diferencia
 
 
-    return v2
+    return vectortratamientos
 
 
 
 
 def principal():
-    v1 = []
-    v2 = []
+    vectorafiliados = []
+    vectortratamientos = []
     op = -1
 
     while op != 0:
@@ -174,16 +162,16 @@ def principal():
         op = int(input("Ingrese opción: "))
 
         if op == 1:
-            v1 = cargarafiliados()
+            vectorafiliados = cargarafiliados()
             #print("opción 1 seleccionada...")
 
 
         elif op == 2:
-            v2 = CargaTratamientos()
+            vectortratamientos = CargaTratamientos()
             #print("opción 2 seleccionada...")
 
         elif op == 3:
-            calculomontofinal(v1, v2)
+            calculomontofinal(vectorafiliados, vectortratamientos)
             print("opción 3 seleccionada...")
 
 

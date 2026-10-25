@@ -67,3 +67,4 @@ def Algoritmo3(alta_complejidad, monto_base, ICD10):
 
     monto_final = monto_base + monto_extra
     return monto_final
+
