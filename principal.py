@@ -61,14 +61,20 @@ def cargarafiliados():
 
         aniadir_en_orden(v1, afiliado)
 
+
     m.close()
+
+    #for afiliado in v1:
+    #    print(afiliado)
+
 
     return v1
 
 
 
 
-def CargaTratamientos(v2):
+def CargaTratamientos():
+    v2 = []
     id_tratamientos = 0
 
     # Apertura simple de archivo según el estándar de la materia
@@ -80,21 +86,22 @@ def CargaTratamientos(v2):
         if not linea_limpia:
             continue
 
+        #print("línea limpia: ", linea_limpia)
         dni, nombre, apellido, icd10, monto, complejidad, id_alg = linea_limpia.split(",")
         id_tratamientos += 1
         monto_final = 0
 
         v2.append(Modulo_clase.Tratamiento(
-            id_tratamientos,
-            dni,
-            nombre,
-            apellido,
-            icd10,
-            monto,
-            monto_final,
-            complejidad,
-            id_alg
-        ))
+                                            id_tratamientos,
+                                            dni,
+                                            nombre,
+                                            apellido,
+                                            icd10,
+                                            monto,
+                                            monto_final,
+                                            complejidad,
+                                            id_alg
+                                        ))
 
     m.close()
 
@@ -149,12 +156,12 @@ def principal():
 
         if op == 1:
             v1 = cargarafiliados()
-            print("opción 1 seleccionada...")
+            #print("opción 1 seleccionada...")
 
 
         elif op == 2:
             v2 = CargaTratamientos()
-            print("opción 2 seleccionada...")
+            #print("opción 2 seleccionada...")
 
         elif op == 3:
 
