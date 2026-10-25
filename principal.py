@@ -9,7 +9,7 @@
 
 
 import Modulo_clase
-import Modulo_clase_Afiliado
+#import Modulo_clase_Afiliado
 import Modulo_algoritmos
 import Modulo_tp1
 
@@ -38,7 +38,7 @@ def aniadir_en_orden(v, afiliado):
 def cargarafiliados():
     v1 = []  # este reinicia el vector en cada llamada
 
-    m = open("coberturas.csv")
+    m = open("coberturasPRUEBAS.csv")
     m.readline()
     id_afiliado = 0
 
@@ -50,13 +50,13 @@ def cargarafiliados():
         dni, codigo, nivel, tope = linea_limpia.split(",")
         id_afiliado += 1
 
-        afiliado = Modulo_clase_Afiliado.Afiliado(
-                                                  id_afiliado,
-                                                  dni,
-                                                  codigo,
-                                                  nivel,
-                                                  tope
-                                                  )
+        afiliado = Modulo_clase.Afiliado(
+                                          id_afiliado,
+                                          dni,
+                                          codigo,
+                                          nivel,
+                                          tope
+                                          )
 
 
         aniadir_en_orden(v1, afiliado)
@@ -78,7 +78,7 @@ def CargaTratamientos():
     id_tratamientos = 0
 
     # Apertura simple de archivo según el estándar de la materia
-    m = open("tratamientos.csv")
+    m = open("tratamientosPRUEBAS.csv")
     m.readline()  # Salta el encabezado
 
     for linea in m:
@@ -108,15 +108,35 @@ def CargaTratamientos():
     return v2
 
 
+def esafiliado(dni, vector):
+    # debe ser busqueda binaria!
+    izq, der = 0, len(vector) - 1
+    while izq <= der:
+        c = (izq + der) // 2
+        if dni == vector[c].dni:
+            #print("se encontró afiliado!: ", dni)
+            return True
+        if dni < vector[c].dni:
+            der = c - 1
+        else:
+            izq = c + 1
+    return False
 
-def calculomontofinal(v):
+def calculomontofinal(v1, v2):
     cont_tratamiento = 0
-    acumulador_dif = 0
+    #acumulador_dif = 0
 
-    for t in v:
+
+
+    for t in v2:
         cont_tratamiento += 1
         monto_base = float(t.monto)
+        #print(t)
         id_alg = int(t.id_alg)
+
+        # acá se verifica si es afiliado para luego usar los algoritmos que van a
+        # modificar el monto final
+        es_afiliado = esafiliado(t.dni, v1)
 
         if id_alg == 1:
             monto_final = Modulo_algoritmos.Algoritmo1(t.conttratamacomplejidad(), monto_base, t.icd10)
@@ -127,16 +147,15 @@ def calculomontofinal(v):
         else:
             monto_final = Modulo_tp1.calcular_monto_tratamiento(t.icd10, monto_base)
 
+        # [] FALTA paso intermedio es determinar el monto final teniendo en cuenta la cobertura
+        # (si es o no afiliado nivel y topes)
+
         t.monto_final = monto_final
-        diferencia = monto_final - monto_base
-        acumulador_dif += diferencia
+        #diferencia = monto_final - monto_base
+        #acumulador_dif += diferencia
 
-    if cont_tratamiento > 0:
-        promedio_r21 = acumulador_dif / cont_tratamiento
-    else:
-        promedio_r21 = 0
 
-    return promedio_r21
+    return v2
 
 
 
@@ -164,7 +183,7 @@ def principal():
             #print("opción 2 seleccionada...")
 
         elif op == 3:
-
+            calculomontofinal(v1, v2)
             print("opción 3 seleccionada...")
 
 

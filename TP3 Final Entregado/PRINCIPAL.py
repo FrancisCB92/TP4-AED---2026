@@ -7,7 +7,7 @@ def CargaTratamientos(v):
     cantidad_tratamientos = 0
 
     # Apertura simple de archivo según el estándar de la materia
-    m = open("tratamientos.csv")
+    m = open("tratamientosPRUEBAS.csv")
     m.readline()  # Salta el encabezado
 
     for linea in m:
